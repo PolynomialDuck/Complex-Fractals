@@ -9,7 +9,7 @@ object Color{
 
 object Window{
     import introprog.PixelWindow
-    val windowSize = (650,650)
+    val windowSize = (510,510)
     val window = new PixelWindow(windowSize._1,windowSize._2, "Mandelbrot", Color.blue)
     def complexValue(p: (Int, Int)): Complex = {
     val x: Double = p._1.toDouble
@@ -21,7 +21,7 @@ object Window{
 object Math{
     def checkRekursivFormel(c: Complex): Boolean = {
         var cTemp = new Complex(0,0)
-        for(i <- 1 to 10){
+        for(i <- 1 to 1000){
             //println(cTemp.magni)
             cTemp=(cTemp*cTemp)+c
         }
@@ -35,8 +35,8 @@ object Math{
 
 object Main {
     def drawMandelbrot(): Unit = {
-        for(y <- 0 to 600){
-            for(x <- 0 to 600){
+        for(y <- 0 to 500){
+            for(x <- 0 to 500){
                 //println(s"${((x.toDouble/100)-3)} ${(-(y.toDouble/100)+3)}")
                 if(Math.checkRekursivFormel(Window.complexValue(x,y))){
                     Window.window.setPixel(x,y,Color.black)
