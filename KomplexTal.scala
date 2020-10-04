@@ -21,7 +21,7 @@ class Complex(var re: Double, var im: Double){
         val tempIm = im
         new Complex(((tempRe*c.re+tempIm*c.im)/(c.re*c.re+c.im*c.im)),((tempIm*c.re-tempRe*c.im)/(c.re*c.re+c.im*c.im)))
     }
-    def magni: Int = (scala.math.sqrt((re*re)+(im*im))).toInt
+    def magni: Double = (scala.math.sqrt((re*re)+(im*im)))
     def theta = scala.math.atan2(re, im)
     override def toString =
         re + (if(im<0)"-"+(-im) else "+"+im) + "i"
