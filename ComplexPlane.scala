@@ -4,23 +4,26 @@ import java.awt.{Color => JColor}
 
 object Color{
     val black = new JColor(0,0,0)
-    val blue = new Jcolor(0,0,255)
+    val blue = new JColor(0,0,255)
 }
 
 object Window{
     import introprog.PixelWindow
-    val windowSize(600,600)
-    val window = new PixelWindow(windowSize._1,windowSize._2, "Mandelbrot", Color.black)
+    val windowSize = (650,650)
+    val window = new PixelWindow(windowSize._1,windowSize._2, "Mandelbrot", Color.blue)
     def complexValue(p: (Int, Int)): Complex = {
-    val c1 = new Complex( ((p._1/100)-3), (-(p._2/100)+3) )
+    val x: Double = p._1.toDouble
+    val y: Double = p._2.toDouble
+    new Complex( ((x/100)-3), (-(y/100)+3) )
     }
 }
 
 object Math{
     def checkRekursivFormel(c: Complex): Boolean = {
-        val cTemp = new Complex(0,0)
-        for(i <- 1 to 300){
-            cTemp = cTemp*cTemp + c
+        var cTemp = new Complex(0,0)
+        for(i <- 1 to 10){
+            //println(cTemp.magni)
+            cTemp=(cTemp*cTemp)+c
         }
         if (cTemp.magni<2){
             return true
@@ -34,8 +37,9 @@ object Main {
     def drawMandelbrot(): Unit = {
         for(y <- 0 to 600){
             for(x <- 0 to 600){
+                //println(s"${((x.toDouble/100)-3)} ${(-(y.toDouble/100)+3)}")
                 if(Math.checkRekursivFormel(Window.complexValue(x,y))){
-                    window.fill(x,y,1,1,Color.black)
+                    Window.window.setPixel(x,y,Color.black)
                     }
                 }
             }
