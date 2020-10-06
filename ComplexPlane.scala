@@ -3,7 +3,6 @@ package MandelbrotSet
 import introprog.PixelWindow
 import java.awt.{Color => JColor}
 
-
 object Color{
     var setColor = new JColor(0,0,0)
     var backColor = new JColor(0,0,255)
@@ -89,44 +88,96 @@ object Main {
         drawMandelbrot()
         var quit = false
         while(!quit){
-               tempAns=Window.makeChoice("Pick a choice: ", Vector("Change to Mandelbrotset", "Change to Juliaset", "Change Color of Background", "Change Color of Set"))
-               if(tempAns==0){
-                   if(Math.ConstantOriented==true){
-                       println("You are already viewing the MandelbrotSet!")
-                   }
-                   else{
-                   Math.ConstantOriented = true
-                   Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backColor)
-                   drawMandelbrot()
-                   }
-               }
-               else if(tempAns==1){
-                        println("Enter constant for the JuliaSet")
-                        tempRe = io.StdIn.readLine("Real Part = ").toDouble
-                        tempIm = io.StdIn.readLine("Complex Part = ").toDouble
-                        Math.constant=new Complex(tempRe,tempIm)
-                        Math.ConstantOriented = false
+            try{
+               tempAns=Window.makeChoice("Pick a choice: ", Vector("Change to Mandelbrotset", "Change to Juliaset", "Change Color of Background", "Change Color of Set","Quit"))
+            } catch {
+                case e: Exception => println("Error: Couldn't understand the input, try again.")
+                tempAns=(-1)
+            }
+            if(0<=tempAns && tempAns<=4){
+                if(tempAns==0){
+                    if(Math.ConstantOriented==true){
+                        println("You are already viewing the MandelbrotSet!")
+                    }
+                    else{
+                    Math.ConstantOriented = true
+                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backColor)
+                    drawMandelbrot()
+                    }
+                }
+                else if(tempAns==1){
+                            println("Enter constant for the JuliaSet")
+                            try {
+                            tempRe = io.StdIn.readLine("Real Part = ").toDouble
+                            } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                tempRe=0
+                            }
+                            try{
+                            tempIm = io.StdIn.readLine("Complex Part = ").toDouble
+                            } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                tempIm=0
+                            }
+                            Math.constant=new Complex(tempRe,tempIm)
+                            Math.ConstantOriented = false
+                            Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backColor)
+                            drawMandelbrot()
+                }
+                else if(tempAns==2){
+                        println("Choose a color using the RGB system...")
+                        try{
+                        tempR = Window.valColor(io.StdIn.readLine("Red = ").toInt)
+                        } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                tempR=0
+                        }
+                        try{
+                        tempG = Window.valColor(io.StdIn.readLine("Green = ").toInt)
+                        } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                tempG=0
+                        }
+                        try{
+                        tempB = Window.valColor(io.StdIn.readLine("Blue = ").toInt)
+                        } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                tempB=0
+                        }
+                        Color.backColor = new JColor(tempR, tempG, tempB)
                         Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backColor)
                         drawMandelbrot()
-               }
-               else if(tempAns==2){
-                    println("Choose a color using the RGB system...")
-                    tempR = Window.valColor(io.StdIn.readLine("Red = ").toInt)
-                    tempG = Window.valColor(io.StdIn.readLine("Green = ").toInt)
-                    tempB = Window.valColor(io.StdIn.readLine("Blue = ").toInt)
-                    Color.backColor = new JColor(tempR, tempG, tempB)
-                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backColor)
-                    drawMandelbrot()
-               }
-               else if(tempAns==3){
-                    println("Choose a color using the RGB system...")
-                    tempR = Window.valColor(io.StdIn.readLine("Red = ").toInt)
-                    tempG = Window.valColor(io.StdIn.readLine("Green = ").toInt)
-                    tempB = Window.valColor(io.StdIn.readLine("Blue = ").toInt)
-                    Color.setColor = new JColor(tempR, tempG, tempB)
-                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backColor)
-                    drawMandelbrot()
-               }
+                }
+                else if(tempAns==3){
+                        println("Choose a color using the RGB system...")
+                        try{
+                        tempR = Window.valColor(io.StdIn.readLine("Red = ").toInt)
+                        } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                tempR=0
+                        }
+                        try{
+                        tempG = Window.valColor(io.StdIn.readLine("Green = ").toInt)
+                        } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                tempG=0
+                        }
+                        try{
+                        tempB = Window.valColor(io.StdIn.readLine("Blue = ").toInt)
+                        } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                tempB=0
+                        }
+                        Color.setColor = new JColor(tempR, tempG, tempB)
+                        Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backColor)
+                        drawMandelbrot()
+                    }
+                else if(tempAns==4){
+                    quit = true
+                    Window.window.hide()
+                }
+                }
+                else println("Error: The Input did not represent a choice")
             } 
         }
     }
