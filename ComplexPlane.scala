@@ -12,12 +12,18 @@ object Color{
 }
 
 object Window{
-    val windowSize = (501,501)
+    var xLength: Int = 1001
+    var yLength: Int = 1001
+    var accuracy: Int = 500
+    var reCenter: Int = ((xLength-1)/2)/accuracy
+    var imCenter: Int = ((yLength-1)/2)/accuracy
+    val windowSize = (xLength,yLength)
+
     val window = new PixelWindow(windowSize._1,windowSize._2, "Mandelbrot", Color.backTupel.jColor())
     def complexValue(p: (Int, Int)): Complex = {
     val x: Double = p._1.toDouble
     val y: Double = p._2.toDouble
-    new Complex( ((x/100)-3), (-(y/100)+3) )
+    new Complex( ((x/accuracy)-reCenter), (-(y/accuracy)+imCenter))
     }
     def makeChoice(msg: String = "null", options: Vector[String]): Int = {
         options.indices.foreach(i => println(i+": "+options(i)))
@@ -46,6 +52,7 @@ object Math{
     var constant: Complex = new Complex(0,0)
     var divType: Double = 0.0
     var divWeight: Double = 0.1
+    var divRate: Double = 30
     
     def checkRekursivFormel(c: Complex): Boolean = {
         if(ConstantOriented){
@@ -53,7 +60,7 @@ object Math{
             cTemp = new Complex(0,0)
             for(i <- 1 to 1000){
                 cTemp=(cTemp*cTemp)+c
-                if(i<10){
+                if(i<divRate){
                 divType+= cTemp.magni
                 }
             }
@@ -70,7 +77,7 @@ object Math{
             cTemp = c
             for(i <- 1 to 1000){
                 cTemp=cTemp*cTemp+constant
-                if(i<10){
+                if(i<divRate){
                     divType+= cTemp.magni
                 }
             }
@@ -87,8 +94,8 @@ object Math{
 
 object Main {
     def drawMandelbrot(): Unit = {
-        for(y <- 0 to 500){
-            for(x <- 0 to 500){
+        for(y <- 0 to Window.yLength-1){
+            for(x <- 0 to Window.xLength-1){
                 if(Math.checkRekursivFormel(Window.complexValue(x,y))){
                     Window.window.setPixel(x,y,Color.setTupel.jColor())
                     Thread.sleep(0)
@@ -112,21 +119,27 @@ object Main {
         var quit = false
         while(!quit){
             try{
-               tempAns=Window.makeChoice("Pick a choice: ", Vector("Change to Mandelbrotset", "Change to Juliaset", "Change Color of Background", "Change Color of Set","Change the weight of divergence", "Quit"))
+               tempAns=Window.makeChoice("Pick a choice: ", Vector("Change to Mandelbrotset", "Change to Juliaset", "Change Color of Background", "Change Color of Set","Change the Color of the Divergence Rate","Change the Weight of Divergence","Change the Fog Divergence","Change Height","Change Width","Change Accuracy", "Change Centerpoint", "Quit"))
             } catch {
                 case e: Exception => println("Error: Couldn't understand the input, try again.")
                 tempAns=(-1)
             }
-            if(0<=tempAns && tempAns<=5){
+            if(0<=tempAns && tempAns<=11){
                 if(tempAns==0){
                     if(Math.ConstantOriented==true){
                         println("You are already viewing the MandelbrotSet!")
                     }
-                    else{
+                    else{ 
+                    Window.xLength = (Window.accuracy*Window.reCenter)
+                    Window.yLength = (Window.accuracy*Window.imCenter)
                     Math.ConstantOriented = true
+                    try{
                     Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
                     drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
                     }
+                } 
                 }
                 else if(tempAns==1){
                             println("Enter constant for the JuliaSet")
@@ -144,8 +157,12 @@ object Main {
                             }
                             Math.constant=new Complex(tempRe,tempIm)
                             Math.ConstantOriented = false
-                            Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
-                            drawMandelbrot()
+                            try{
+                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
+                    drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
+                    }
                 }
                 else if(tempAns==2){
                         println("Choose a color using the RGB system...")
@@ -167,8 +184,12 @@ object Main {
                                 case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
                                 Color.backTupel.b=0
                         }
-                        Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
-                        drawMandelbrot()
+                        try{
+                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
+                    drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
+                    }
                 }
                 else if(tempAns==3){
                         println("Choose a color using the RGB system...")
@@ -190,20 +211,131 @@ object Main {
                                 case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
                                 Color.setTupel.b=0
                         }
-                        Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
-                        drawMandelbrot()
+                        try{
+                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
+                    drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
                     }
-                else if(tempAns==4){
+                    }
+                    else if(tempAns==4){
+                        println("Choose a color using the RGB system...")
+                        try{
+                        Color.divTupel.r = Window.valColor(io.StdIn.readLine("Red = ").toInt)
+                        } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                Color.divTupel.r=0
+                        }
+                        try{
+                        Color.divTupel.g = Window.valColor(io.StdIn.readLine("Green = ").toInt)
+                        } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                Color.divTupel.g=0
+                        }
+                        try{
+                        Color.divTupel.b = Window.valColor(io.StdIn.readLine("Blue = ").toInt)
+                        } catch{ 
+                                case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                                Color.divTupel.b=0
+                        }
+                        try{
+                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
+                    drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
+                    }
+                    }
+                else if(tempAns==5){
                     try{
                         Math.divWeight = io.StdIn.readLine("Divergence Weight = ").toDouble
                     } catch{
                         case e: Exception => println("Error: Couldn't understand the input. Returning value 0.5...")
                         Math.divWeight = 0.5
                     }
+                    try{
                     Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
                     drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
+                    }
                 }
-                else if(tempAns==5){
+                else if(tempAns==6){
+                    try {
+                    Math.divRate = io.StdIn.readLine("Divergence Rate = ").toDouble
+                    } catch{
+                        case e: Exception => println("Error: Couldn't understand the input. Returning value 25...")
+                        Math.divWeight = 25
+                    }
+                    try{
+                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
+                    drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
+                    }
+                }
+                else if(tempAns==7){
+                    try {
+                    Window.yLength = io.StdIn.readLine("Height = ").toInt
+                    } catch{
+                        case e: Exception => println("Error: Couldn't understand the input. Returning value 501...")
+                        Window.yLength = 501
+                    }
+                    try{
+                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
+                    drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
+                    }
+                }
+                else if(tempAns==8){
+                    try {
+                    Window.xLength = io.StdIn.readLine("Width = ").toInt
+                    } catch{
+                        case e: Exception => println("Error: Couldn't understand the input. Returning value 501...")
+                        Window.xLength = 501
+                    }
+                    try{
+                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
+                    drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
+                    }
+                }
+                else if(tempAns==9){
+                    try {
+                    Window.accuracy = io.StdIn.readLine("Accuracy = ").toInt
+                    } catch{
+                        case e: Exception => println("Error: Couldn't understand the input. Returning value 501...")
+                        Window.xLength = 100
+                    }
+                    try{
+                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
+                    drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
+                    }
+                }
+                else if(tempAns==10){
+                    try {
+                    Window.reCenter = io.StdIn.readLine("Choose a real part for the centerpoint... ").toInt
+                    } catch{
+                        case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                        Window.reCenter = 0
+                    }
+                    try {
+                    Window.imCenter = io.StdIn.readLine("Choose a complex part for the centerpoint... ").toInt
+                    } catch{
+                        case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
+                        Window.imCenter = 0
+                    }
+                    try{
+                    Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
+                    drawMandelbrot()
+                    }catch{
+                        case e: Exception => println("An error occured, couldn't paint the set...")
+                    }
+                }
+                else if(tempAns==11){
                     quit = true
                     Window.window.hide()
                 }
