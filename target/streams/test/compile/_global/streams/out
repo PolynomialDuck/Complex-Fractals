@@ -1,0 +1,14 @@
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Felix\Desktop\Projects\EpicProjects\ComplexPlane.scala:71:51: multiarg infix syntax looks like a tuple and will be deprecated[0m
+[0m[[0m[33mwarn[0m] [0m[0m                Color.divColor = ((Color.backTupel*(divType*divWeight,divType*divWeight,divType*divWeight)).addTupel(Color.divTupel*(1/(divType*divWeight), 1/(divType*divWeight), 1/(divType*divWeight)))).jColor()[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                                  ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Felix\Desktop\Projects\EpicProjects\ComplexPlane.scala:71:132: multiarg infix syntax looks like a tuple and will be deprecated[0m
+[0m[[0m[33mwarn[0m] [0m[0m                Color.divColor = ((Color.backTupel*(divType*divWeight,divType*divWeight,divType*divWeight)).addTupel(Color.divTupel*(1/(divType*divWeight), 1/(divType*divWeight), 1/(divType*divWeight)))).jColor()[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                                                                                                                   ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Felix\Desktop\Projects\EpicProjects\ComplexPlane.scala:88:51: multiarg infix syntax looks like a tuple and will be deprecated[0m
+[0m[[0m[33mwarn[0m] [0m[0m                Color.divColor = ((Color.backTupel*(divType*divWeight,divType*divWeight,divType*divWeight)).addTupel(Color.divTupel*(1/(divType*divWeight), 1/(divType*divWeight), 1/(divType*divWeight)))).jColor()[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                                  ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Felix\Desktop\Projects\EpicProjects\ComplexPlane.scala:88:132: multiarg infix syntax looks like a tuple and will be deprecated[0m
+[0m[[0m[33mwarn[0m] [0m[0m                Color.divColor = ((Color.backTupel*(divType*divWeight,divType*divWeight,divType*divWeight)).addTupel(Color.divTupel*(1/(divType*divWeight), 1/(divType*divWeight), 1/(divType*divWeight)))).jColor()[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                                                                                                                   ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m2 deprecations (since 2.13.0); re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0m5 warnings found[0m

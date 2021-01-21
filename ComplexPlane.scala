@@ -15,11 +15,11 @@ object Window{
     var xLength: Int = 1001
     var yLength: Int = 1001
     var accuracy: Int = 500
-    var reCenter: Int = ((xLength-1)/2)/accuracy
-    var imCenter: Int = ((yLength-1)/2)/accuracy
+    var reCenter: Double = ((xLength-1)/2)/accuracy
+    var imCenter: Double = ((yLength-1)/2)/accuracy
     val windowSize = (xLength,yLength)
 
-    val window = new PixelWindow(windowSize._1,windowSize._2, "Mandelbrot", Color.backTupel.jColor())
+    val window = new PixelWindow(windowSize._1,windowSize._2, "Fractal", Color.backTupel.jColor())
     def complexValue(p: (Int, Int)): Complex = {
     val x: Double = p._1.toDouble
     val y: Double = p._2.toDouble
@@ -51,8 +51,8 @@ object Math{
     var cTemp: Complex = new Complex(0,0)
     var constant: Complex = new Complex(0,0)
     var divType: Double = 0.0
-    var divWeight: Double = 0.1
-    var divRate: Double = 30
+    var divWeight: Double = 0.0065
+    var divRate: Double = 25
     
     def checkRekursivFormel(c: Complex): Boolean = {
         if(ConstantOriented){
@@ -130,8 +130,8 @@ object Main {
                         println("You are already viewing the MandelbrotSet!")
                     }
                     else{ 
-                    Window.xLength = (Window.accuracy*Window.reCenter)
-                    Window.yLength = (Window.accuracy*Window.imCenter)
+                    Window.xLength = (Window.accuracy*Window.reCenter).toInt
+                    Window.yLength = (Window.accuracy*Window.imCenter).toInt
                     Math.ConstantOriented = true
                     try{
                     Window.window.fill(0,0,Window.windowSize._1,Window.windowSize._2, Color.backTupel.jColor())
@@ -317,13 +317,13 @@ object Main {
                 }
                 else if(tempAns==10){
                     try {
-                    Window.reCenter = io.StdIn.readLine("Choose a real part for the centerpoint... ").toInt
+                    Window.reCenter = io.StdIn.readLine("Choose a real part for the centerpoint... ").toDouble
                     } catch{
                         case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
                         Window.reCenter = 0
                     }
                     try {
-                    Window.imCenter = io.StdIn.readLine("Choose a complex part for the centerpoint... ").toInt
+                    Window.imCenter = io.StdIn.readLine("Choose a complex part for the centerpoint... ").toDouble
                     } catch{
                         case e: Exception => println("Error: Couldn't understand the input. Returning value 0...")
                         Window.imCenter = 0
